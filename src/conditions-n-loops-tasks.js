@@ -408,14 +408,18 @@ function rotateMatrix(/* matrix */) {
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
 function sortByAsc(arr) {
-  for (let j = 0; j < arr.length - 1; j += 1) {
-    if (arr[j] > arr[j + 1]) {
-      const temp = arr[j];
-      arr[j] = arr[j + 1];
-      arr[j + 1] = temp;
+  const arrCopy = arr;
+  for (let i = 0; i < arr.length; ) {
+    if (arrCopy[i] > arrCopy[i + 1]) {
+      const elem = arrCopy[i];
+      arrCopy[i] = arrCopy[i + 1];
+      arrCopy[i + 1] = elem;
+      i -= 1;
+    } else {
+      i += 1;
     }
   }
-  return arr;
+  return arrCopy;
 }
 
 /**
@@ -435,8 +439,21 @@ function sortByAsc(arr) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  let strCopy = str;
+  for (let i = 1; i <= iterations; i += 1) {
+    let oddPart = '';
+    let evenPart = '';
+    for (let j = 0; j < strCopy.length; j += 1) {
+      if (j % 2 === 0) {
+        evenPart += strCopy[j];
+      } else {
+        oddPart += strCopy[j];
+      }
+    }
+    strCopy = evenPart + oddPart;
+  }
+  return strCopy;
 }
 
 /**
@@ -456,8 +473,25 @@ function shuffleChar(/* str, iterations */) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const arr = Array.from(String(number));
+  let i = arr.length - 1;
+  while (i > 0 && arr[i - 1] >= arr[i]) i -= 1;
+  if (i <= 0) return false;
+  let j = arr.length - 1;
+  while (arr[j] <= arr[i - 1]) j -= 1;
+  let temp = arr[i - 1];
+  arr[i - 1] = arr[j];
+  arr[j] = temp;
+  j = arr.length - 1;
+  while (i < j) {
+    temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+    i += 1;
+    j -= 1;
+  }
+  return Number(arr.join(''));
 }
 
 module.exports = {
